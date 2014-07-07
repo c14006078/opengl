@@ -38,7 +38,7 @@ static void display(void)
     glTranslatef(0.0, 0.0, -5.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
  
-         //查询定点着色器属性变量VertexTemp，并对它进行设置，每个定点需要指定一个属性
+         //查询vertex shader属性变量VertexTemp，并对它进行设置，每个vertex需要指定一个属性
          GLint tempLoc = glGetAttribLocationARB(ProgramObject, "VertexTemp");
          glBegin(GL_TRIANGLES);
                    glVertexAttrib1f(tempLoc, 0.0f);        
