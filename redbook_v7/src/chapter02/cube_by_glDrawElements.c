@@ -1,9 +1,10 @@
 #include<GL/glut.h>
     GLfloat rCube = 0.0;
 
-    /*static GLint vertices[] = { 100, 200, 100,
-				200, 200, 100,
-                                200, 200, 300,
+    /*static GLint vertices[] = {
+                100, 200, 100,
+				200, 200, 100,		//index: 1
+                200, 200, 300,
 				100, 200, 300,
 				100, 100, 100,		//index: 4
 				200, 100, 100,		//index: 5
@@ -11,9 +12,10 @@
 				100, 100, 300		//index: 7
 				};
     */
-    static GLfloat vertices[] = { 1.0, 2.0, 1.0,		//index: 0
+    static GLfloat vertices[] = {
+                1.0, 2.0, 1.0,		//index: 0
 				2.0, 2.0, 1.0,
-                                2.0, 2.0, 3.0,		//index: 2
+                2.0, 2.0, 3.0,		//index: 2
 				1.0, 2.0, 3.0,
 				1.0, 1.0, 1.0,		//index: 4
 				2.0, 1.0, 1.0,		//index: 5
@@ -22,7 +24,8 @@
 				};
 
 
-    static GLfloat colors[] = { 0.8, 0.0, 0.0,		// index: 0
+    static GLfloat colors[] = {
+                0.8, 0.0, 0.0,		// index: 0
 				0.6, 0.0, 0.0,
 				0.0, 0.4, 0.0,		// index: 2
 				0.0, 0.2, 0.0,
@@ -67,32 +70,35 @@ void drawCube(void) {
     glTranslatef(0.0, 0.0, -5.0f);
     glRotatef(rCube, 0.0f, 1.0f, 0.0f); 
 
-    /*glDrawElements(GL_QUADS, 4, GL_UNSIGNED_BYTE, front);   
+#if 0
+    glDrawElements(GL_QUADS, 4, GL_UNSIGNED_BYTE, front); 
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_BYTE, right);   
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_BYTE, back);   
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_BYTE, left);   
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_BYTE, bottom);   
     glDrawElements(GL_QUADS, 4, GL_UNSIGNED_BYTE, top);  
-*/
+#endif
+
     glDrawElements(GL_QUADS, sizeof(allIndices) / sizeof(GLubyte), GL_UNSIGNED_BYTE, allIndices); 
     glPopMatrix();
 
     rCube += 0.1;
 
-    glFlush();
+    glFlush();  // The animation will behave abnormally if glFlush() is not called.
 }
 
-void reshape ( int w, int h )   // Create The Reshape Function (the viewport)
+void reshape(int w, int h)   // Create The Reshape Function (the viewport)
 {
-  glViewport     ( 0, 0, w, h );
-  glMatrixMode   ( GL_PROJECTION );  // Select The Projection Matrix
-  glLoadIdentity ( );                // Reset The Projection Matrix
-  if ( h==0 )  // Calculate The Aspect Ratio Of The Window
-     gluPerspective ( 90, ( float ) w, 1.0, 5000.0 );
-  else
-     gluPerspective ( 90, ( float ) w / ( float ) h, 1.0, 5000.0 );
-  glMatrixMode   ( GL_MODELVIEW );  // Select The Model View Matrix
-  glLoadIdentity ( );    // Reset The Model View Matrix
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);  // Select The Projection Matrix
+    glLoadIdentity();                // Reset The Projection Matrix
+    if (h == 0) {  // Calculate The Aspect Ratio Of The Window
+        gluPerspective ( 90, ( float ) w, 1.0, 5000.0 );
+    } else {
+        gluPerspective ( 90, ( float ) w / ( float ) h, 1.0, 5000.0 );
+    }
+    glMatrixMode(GL_MODELVIEW);  // Select The Model View Matrix
+    glLoadIdentity();    // Reset The Model View Matrix
 }
 
 void main(int argc, char **argv) {

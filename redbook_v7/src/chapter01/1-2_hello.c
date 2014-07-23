@@ -20,7 +20,9 @@ void lineSegment(void) {
 #endif
 
     glTranslatef(0.5, 0.5, 0.0);
-    glutWireCube(1.0);
+    // glutWireCube(1.0);
+    // glutSolidCube(1.0);
+    glutWireSphere(1.0, 10, 12);
 
     glFlush();
 }
