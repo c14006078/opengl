@@ -437,12 +437,12 @@ int main(int argc, char **argv) {
     glutKeyboardFunc(processNormalKeys);
  
     glewInit();
-    if (glewIsSupported("GL_VERSION_3_3"))
+    /* if (glewIsSupported("GL_VERSION_3_0"))
         printf("Ready for OpenGL 3.3\n");
     else {
-        printf("OpenGL 3.3 not supported\n");
+        printf("OpenGL 3.1 not supported\n");
         exit(1);
-    }
+    } */
  
     glEnable(GL_DEPTH_TEST);
     glClearColor(1.0,1.0,1.0,1.0);
