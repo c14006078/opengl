@@ -18,6 +18,47 @@
 #include <X11/extensions/xf86vmode.h>
 #include <X11/keysym.h>
 
+#include "debug.h"
+#include "md5.h"
+#include "md5.c"
+#include "file.h"
+#include "file.c"
+
+#define glTexImage2D( a, b, c, d, e, f, g, h, i)\
+						glTexImage2D( a, b, c, d, e, f, g, h,\
+							md5_replace( d, e, 3, i, "TextureAnalysis/final/"))\
+
+/*glTexImage2D(GL_TEXTURE_2D, 0, 3, texti->width, texti->height, 0,
+            GL_RGB, GL_UNSIGNED_BYTE, texti->data)*/
+
+unsigned char* md5_replace( int w, int h, int channel, unsigned char* data, char* path)
+{
+	printf("============================\n");
+	int size = w * h *channel;
+	char* md5 = md5sum1( data, size);
+	char* bin = ( char*) malloc( sizeof( char) * 100);
+
+	strcpy( bin, path);
+	strcat( bin, md5);
+	
+	printf("bin file = %s", bin);
+
+	FILE* fp = fopen( bin, "rb");
+	if( fp == NULL){
+		printf("I cannot find the bin\n");
+		printf("============================\n");
+		return data;
+	}
+	else{
+		printf("haha, I find u\n");
+		unsigned char* tmp = ( unsigned char*) malloc( sizeof( char) * size);
+		if( fread( tmp, size, 1, fp) == 1 ) printf("Replace Sucesses\n");
+		else printf("fread failed\n");
+		printf("============================\n");
+		return tmp;
+	}
+}
+
 /* stuff about our window grouped together */
 typedef struct {
     Display *dpy;
@@ -161,6 +202,7 @@ Bool loadGLTextures()   /* Load Bitmaps And Convert To Textures */
         glGenTextures(1, &texture[0]);   /* create the texture */
         glBindTexture(GL_TEXTURE_2D, texture[0]);
         /* actually generate the texture */
+				printf("texti->data md5sum = %s\n", md5sum1( texti->data, texti->width * texti->height * 3));
         glTexImage2D(GL_TEXTURE_2D, 0, 3, texti->width, texti->height, 0,
             GL_RGB, GL_UNSIGNED_BYTE, texti->data);
         /* enable linear filtering */
